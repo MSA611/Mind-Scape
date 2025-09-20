@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  toastStore,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, HStack, useToast } from "@chakra-ui/react";
 import NoteFunctions from "../zustand";
 import { Link } from "react-router";
 
@@ -33,7 +25,7 @@ const NoteCard = ({ note }) => {
 
   return (
     <Box
-      maxW="lg"
+      flex={{ base: "100%", md: "48%", lg: "30%" }}
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
