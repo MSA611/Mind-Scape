@@ -26,7 +26,7 @@ const Nav = () => {
           fontSize="6xl"
           fontWeight="extrabold"
         >
-          MERN-NOTES
+					MIND-SCAPE
         </Text>
         <HStack>
           <Link to="/create">

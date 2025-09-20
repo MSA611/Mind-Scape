@@ -8,6 +8,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import NoteFunctions from "../zustand";
+import { Link } from "react-router";
 
 const NoteCard = ({ note }) => {
   const { DelNote } = NoteFunctions();
@@ -38,7 +39,7 @@ const NoteCard = ({ note }) => {
       overflow="hidden"
       p={"6"}
     >
-      <Heading as="h5" size="sm">
+      <Heading noOfLines={1} as="h5" size="sm">
         {note.title}
       </Heading>
       <Box whiteSpace="pre-wrap" mt={"4"} mb={"4"}>
@@ -53,7 +54,9 @@ const NoteCard = ({ note }) => {
           })}
         </Heading>
         <HStack>
-          <Button colorScheme="green">Update</Button>
+          <Link to={`/note/${note._id}`}>
+            <Button colorScheme="green">Update</Button>
+          </Link>
           <Button onClick={() => Delete(note._id)} colorScheme="green">
             Delete
           </Button>

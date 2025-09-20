@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, useToast } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import Nav from "../Components/Nav.jsx";
 import NoteFunctions from "../zustand.js";
 import { useEffect } from "react";
@@ -6,10 +6,12 @@ import NoteCard from "../Components/NoteCard.jsx";
 
 const HomePage = () => {
   const { fetchNote, note } = NoteFunctions();
-  const toast = useToast();
 
   useEffect(() => {
-    fetchNote();
+    const fetchData = async () => {
+      await fetchNote();
+    };
+    fetchData();
   }, []);
 
   return (

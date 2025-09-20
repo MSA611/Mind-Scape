@@ -57,3 +57,32 @@ export const DelNote = async (req, res) => {
     res.status(500).json({ message: "Error While Deleting" });
   }
 };
+
+export const UpdateNote = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    if (!title || !content)
+      return res.status(500).json({ message: "Please Fill All the Details" });
+
+    const note = await Note.findByIdAndUpdate(
+      req.params.id,
+      { title, content },
+      { new: true },
+    );
+    res.status(200).json(note);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error While Updating" });
+  }
+};
+
+export const getNote = async (req, res) => {
+  try {
+    const note = await Note.findById(req.params.id);
+    return res.status(200).json(note);
+  } catch (error) {
+    console.error(error);
+    res.status.json(500).json({ message: "Error While finding Data" });
+  }
+};
