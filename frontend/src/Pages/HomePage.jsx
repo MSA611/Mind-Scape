@@ -19,6 +19,7 @@ const HomePage = () => {
     <Box minH={"100vh"}>
       <Nav />
       <Flex
+        alignItems={"flex-start"}
         p={"6"}
         flexWrap={"wrap"}
         gap={"12"}
