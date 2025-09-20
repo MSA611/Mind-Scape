@@ -1,5 +1,5 @@
 # You can see the project here
 
-```https://mind-scape.onrender.com/
+```https://mind-scape.onrender.com
 
 ```
