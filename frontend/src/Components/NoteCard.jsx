@@ -33,7 +33,7 @@ const NoteCard = ({ note }) => {
 
   return (
     <Box
-      maxW="sm"
+      maxW="lg"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
