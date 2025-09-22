@@ -1,3 +1,4 @@
+import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -26,14 +27,14 @@ const Nav = () => {
           fontSize="6xl"
           fontWeight="extrabold"
         >
-					MIND-SCAPE
+          MIND-SCAPE
         </Text>
         <HStack>
           <Link to="/create">
             <Button colorScheme="blue">+</Button>
           </Link>
           <Button colorScheme="blue" onClick={toggleColorMode}>
-            {colorMode === "light" ? "D" : "L"}
+            {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
           </Button>
         </HStack>
       </Flex>

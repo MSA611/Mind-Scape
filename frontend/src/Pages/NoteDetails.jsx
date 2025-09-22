@@ -11,6 +11,7 @@ import {
 import NoteFunctions from "../zustand";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { ArrowBackIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 const NoteDetails = () => {
   const [resize, setResize] = useState("horizontal");
@@ -68,13 +69,14 @@ const NoteDetails = () => {
     <Box p={"12"}>
       <HStack>
         <Link to="/">
-          <Button mb={"3.5"} colorScheme="blue">
+          <Button mb={"3.5"} gap={2} colorScheme="blue">
+            <ArrowBackIcon />
             Back
           </Button>
         </Link>
 
         <Button onClick={toggleColorMode} mb={"3.5"} colorScheme="blue">
-          {colorMode === "light" ? "D" : "L"}
+          {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
         </Button>
       </HStack>
       <VStack>
