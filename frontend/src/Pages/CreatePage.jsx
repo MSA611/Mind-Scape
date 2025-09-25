@@ -16,6 +16,7 @@ import { ArrowBackIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 const CreatePage = () => {
   const nav = useNavigate();
   const [resize, setResize] = useState("horizontal");
+  const [createState, setCreateState] = useState(false);
   const [data, setData] = useState({
     name: "",
     content: "",
@@ -31,6 +32,7 @@ const CreatePage = () => {
   };
 
   const post = async () => {
+    setCreateState(true);
     const { success, message } = await createNote(data);
     if (success) {
       toast({
@@ -46,6 +48,7 @@ const CreatePage = () => {
         status: "error",
       });
     }
+    setCreateState(false);
   };
 
   return (
@@ -77,8 +80,13 @@ const CreatePage = () => {
           size="lg"
           resize={resize}
         />
-        <Button onClick={post} w={"full"} colorScheme="blue">
-          Create Now
+        <Button
+          disabled={createState}
+          onClick={post}
+          w={"full"}
+          colorScheme="blue"
+        >
+          {createState ? "Creating..." : "Create Now"}
         </Button>
       </VStack>
     </Box>

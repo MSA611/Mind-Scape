@@ -1,17 +1,19 @@
-import { Box, Flex, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Box, Flex, VStack } from "@chakra-ui/react";
 import Nav from "../Components/Nav.jsx";
 import NoteFunctions from "../zustand.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NoteCard from "../Components/NoteCard.jsx";
-import { wrap } from "framer-motion";
 import EmptyDB from "../Components/EmptyDB.jsx";
+import Loading from "../Components/Loading.jsx";
 
 const HomePage = () => {
   const { fetchNote, note } = NoteFunctions();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       await fetchNote();
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -19,7 +21,9 @@ const HomePage = () => {
   return (
     <Box minH={"100vh"}>
       <Nav />
-      <VStack>{note.length == 0 && <EmptyDB />}</VStack>
+
+      {loading && <Loading />}
+      <VStack>{note.length == 0 && !loading ? <EmptyDB /> : null}</VStack>
       <Flex
         alignItems={"flex-start"}
         p={"6"}

@@ -1,12 +1,15 @@
 import { Box, Button, Flex, Heading, HStack, useToast } from "@chakra-ui/react";
 import NoteFunctions from "../zustand";
 import { Link } from "react-router";
+import { useState } from "react";
 
 const NoteCard = ({ note }) => {
   const { DelNote } = NoteFunctions();
+  const [deleteState, setDeleteState] = useState(false);
   const toast = useToast();
 
   const Delete = async (p_id) => {
+    setDeleteState(true);
     const { success, message } = await DelNote(p_id);
     if (success) {
       toast({
@@ -21,6 +24,7 @@ const NoteCard = ({ note }) => {
         status: "error",
       });
     }
+    setDeleteState(false);
   };
 
   return (
@@ -49,8 +53,12 @@ const NoteCard = ({ note }) => {
           <Link to={`/note/${note._id}`}>
             <Button colorScheme="green">Update</Button>
           </Link>
-          <Button onClick={() => Delete(note._id)} colorScheme="green">
-            Delete
+          <Button
+            disabled={deleteState}
+            onClick={() => Delete(note._id)}
+            colorScheme="green"
+          >
+            {deleteState ? "Deleting..." : "Delete"}
           </Button>
         </HStack>
       </Flex>
