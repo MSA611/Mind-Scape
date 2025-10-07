@@ -1,6 +1,7 @@
 import User from "./user.model.js";
 import bcrypt from "bcrypt";
 import generateToken from "./generateToken.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const signup = async (req, res) => {
   const { fullName, email, password, profilePic } = req.body;
@@ -82,4 +83,28 @@ export const logout = async (_, res) => {
     maxAge: 0,
   });
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+export const updateProfile = async (req, res) => {
+  const { profilePic } = req.body;
+  try {
+    if (!profilePic)
+      return res.status(400).json({ message: "Upload The profile Picture" });
+    const userId = req.user._id;
+
+    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+    const uploadImgUrl = uploadResponse.secure_url;
+
+    const updatedProfile = await User.findByIdAndUpdate(
+      userId,
+      { profilePic: uploadImgUrl },
+      { new: true },
+    );
+
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erorr While Updating the profile" });
+  }
 };
