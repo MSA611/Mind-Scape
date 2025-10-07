@@ -6,8 +6,10 @@ import {
   getNote,
   UpdateNote,
 } from "./note.controller.js";
+import { arcjetMiddleware } from "./arcjet.middleware.js";
 
 const router = express.Router();
+router.use(arcjetMiddleware);
 
 router.get("/", getAllNotes);
 router.get("/:id", getNote);
