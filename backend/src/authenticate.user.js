@@ -14,7 +14,10 @@ const authenticate = async (req, res, next) => {
       return res.status(403).json({ message: "User Has Token But Not Valid" });
 
     const user = await User.findById(decode.userId).select("-password");
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(403).json({
+        message: "User does not exists in the data in the decode jwt verify",
+      });
 
     req.user = user;
     next();

@@ -71,6 +71,7 @@ export const login = async (req, res) => {
     if (!comparePass)
       return res.status(400).json({ message: "Wrong Password" });
 
+    generateToken(user._id, res);
     res.status(200).json({ message: "User logged In SuccessFully" });
   } catch (error) {
     console.error(error);
