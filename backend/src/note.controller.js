@@ -1,8 +1,8 @@
 import Note from "./NoteModel.js";
 
-export const getAllNotes = async (_, res) => {
+export const getAllNotes = async (req, res) => {
   try {
-    const note = await Note.find();
+    const note = await Note.find({ creatorId: req.user._id });
     res.status(200).json(note);
   } catch (error) {
     console.error(error);
@@ -36,6 +36,7 @@ export const CreateNote = async (req, res) => {
 
     //saving the note
     const note = new Note({
+      creatorId: req.user._id,
       title: title,
       content: content,
     });
@@ -67,7 +68,7 @@ export const UpdateNote = async (req, res) => {
 
     const note = await Note.findByIdAndUpdate(
       req.params.id,
-      { title, content },
+      { title, content, creatorId: req.user._id },
       { new: true },
     );
     res.status(200).json(note);
