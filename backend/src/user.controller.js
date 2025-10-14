@@ -6,40 +6,46 @@ import { v2 as cloudinary } from "cloudinary";
 export const signup = async (req, res) => {
   const { fullName, email, password, profilePic } = req.body;
   try {
-    if (!fullName || !email || !password)
+    if (!fullName || !email || !password) {
       return res.status(400).json({ message: "Please Fill All The Details" });
+    }
 
-    if (password.length < 6)
+    if (password.length < 6) {
       return res
         .status(400)
         .json({ message: "Password Should Be Minimum 6 Characters" });
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email))
+    if (!emailRegex.test(email)) {
       return res.status(400).json({ message: "Invalid Email" });
+    }
 
-    const user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "User Already Exists" });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User Already Exists" });
+    }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = User({
+    let profileImg = null;
+    if (profilePic) {
+      const uploadedPic = await cloudinary.uploader.upload(profilePic);
+      profileImg = uploadedPic.secure_url;
+    }
+
+    const newUser = new User({
       fullName,
       email,
       password: hashedPassword,
-      profilePic,
+      profilePic: profileImg,
     });
 
-    if (newUser) {
-      await newUser.save();
-      generateToken(newUser._id, res);
-      res.status(201).json(newUser);
-    } else {
-      res
-        .status(400)
-        .json({ message: "SomeThing went wrong while creation of user" });
-    }
+    await newUser.save();
+    generateToken(newUser._id, res);
+
+    res.status(201).json(newUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed To signup the user" });
@@ -62,10 +68,7 @@ export const login = async (req, res) => {
         .json({ message: "Password Should Be Minimum 6 Characters" });
 
     const user = await User.findOne({ email });
-    if (!user)
-      return res
-        .status(400)
-        .json({ message: "Email Already Exists Try Another One" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const comparePass = await bcrypt.compare(password, user.password);
     if (!comparePass)

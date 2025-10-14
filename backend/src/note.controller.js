@@ -13,39 +13,41 @@ export const getAllNotes = async (req, res) => {
 export const CreateNote = async (req, res) => {
   try {
     const { title, content } = req.body;
-    //checking weather the note is title or content empty
-    if (!title || !content)
-      return res.status(500).json({ message: "Please Fill All The Details" });
-    //checking weather both title and content exists
 
-    const contentExists = await Note.findOne({ content });
-    const titleExists = await Note.findOne({ title });
+    if (!title || !content) {
+      return res.status(400).json({ message: "Please Fill All The Details" });
+    }
 
-    if (titleExists && contentExists)
-      return res
-        .status(500)
-        .json({ message: "Both The Title And Content Exists" });
+    const existingNote = await Note.findOne({
+      creatorId: req.user._id,
+      $or: [{ title }, { content }],
+    });
 
-    //check weather the title exists
-    if (titleExists)
-      return res.status(500).json({ message: "This Title Already Exits" });
+    if (existingNote) {
+      if (existingNote.title === title && existingNote.content === content) {
+        return res
+          .status(400)
+          .json({ message: "Both The Title And Content Exists" });
+      }
+      if (existingNote.title === title) {
+        return res.status(400).json({ message: "This Title Already Exists" });
+      }
+      if (existingNote.content === content) {
+        return res.status(400).json({ message: "This Content Already Exists" });
+      }
+    }
 
-    //check weather the content exists or not
-    if (contentExists)
-      return res.status(500).json({ message: "This content Already Exists" });
-
-    //saving the note
     const note = new Note({
       creatorId: req.user._id,
-      title: title,
-      content: content,
+      title,
+      content,
     });
 
     const savedNote = await note.save();
     res.status(201).json(savedNote);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error While Create Notes" });
+    res.status(500).json({ message: "Error While Creating Note" });
   }
 };
 
@@ -63,8 +65,9 @@ export const UpdateNote = async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    if (!title || !content)
-      return res.status(500).json({ message: "Please Fill All the Details" });
+    if (!title || !content) {
+      return res.status(400).json({ message: "Please Fill All the Details" });
+    }
 
     const note = await Note.findByIdAndUpdate(
       req.params.id,
@@ -84,6 +87,6 @@ export const getNote = async (req, res) => {
     return res.status(200).json(note);
   } catch (error) {
     console.error(error);
-    res.status.json(500).json({ message: "Error While finding Data" });
+    res.status(500).json({ message: "Error While finding Data" });
   }
 };
