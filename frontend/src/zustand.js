@@ -22,7 +22,15 @@ const NoteFunctions = create((set) => ({
     }
   },
 
-  logout: async () => {},
+  logout: async () => {
+    try {
+      await axios.post("/api/auth/logout");
+      set({ authUser: null });
+      return { success: ture, message: "Logged Out SuccessFully" };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
+    }
+  },
 
   signup: async (information) => {
     try {
