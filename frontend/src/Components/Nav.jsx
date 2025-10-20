@@ -30,6 +30,7 @@ const Nav = () => {
           MIND-SCAPE
         </Text>
         <HStack>
+          <Button colorScheme="blue">Logout</Button>
           <Link to="/create">
             <Button colorScheme="blue">+</Button>
           </Link>

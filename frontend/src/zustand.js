@@ -22,6 +22,8 @@ const NoteFunctions = create((set) => ({
     }
   },
 
+  logout: async () => {},
+
   signup: async (information) => {
     try {
       set({ Signing: true });
@@ -31,7 +33,6 @@ const NoteFunctions = create((set) => ({
       set({ authUser: res.data });
       return { success: true, message: res.data?.message };
     } catch (error) {
-      set({ authUser: null });
       return { success: false, message: error.response?.data?.message };
     } finally {
       set({ Signing: false });
@@ -47,7 +48,6 @@ const NoteFunctions = create((set) => ({
       set({ authUser: res.data });
       return { success: true, message: res.data?.message };
     } catch (error) {
-      set({ authUser: null });
       return { success: false, message: error.response?.data?.message };
     } finally {
       set({ loggingIn: false });

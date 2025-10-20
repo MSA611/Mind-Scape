@@ -47,8 +47,13 @@ function LoginPage() {
   };
 
   return (
-    <Box minW={"100vw"} marginY={"6"} minH={"100dvh"}>
-      <Container p={"6"}>
+    <Box minW={"100vw"} marginY={"100"} minH={"100dvh"}>
+      <Container
+        borderWidth="1px"
+        borderRadius="lg"
+        borderColor="green.500"
+        p={"6"}
+      >
         <Flex justifyContent="flex-end" mb={4}>
           <Button colorScheme="cyan" onClick={toggleColorMode}>
             {colorMode === "light" ? <SunIcon /> : <MoonIcon />}

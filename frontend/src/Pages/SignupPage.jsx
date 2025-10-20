@@ -47,8 +47,13 @@ function SignupPage() {
   };
 
   return (
-    <Box minW={"100vw"} minH={"100vh"}>
-      <Container p={"6"}>
+    <Box marginY={"100"} minW={"100vw"} minH={"100vh"}>
+      <Container
+        borderWidth="1px"
+        borderRadius="lg"
+        borderColor="green.500"
+        p={"6"}
+      >
         <Flex justifyContent="flex-end" mb={4}>
           <Button colorScheme="cyan" onClick={toggleColorMode}>
             {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
