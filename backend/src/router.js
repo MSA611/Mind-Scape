@@ -5,10 +5,12 @@ import {
   getAllNotes,
   getNote,
   UpdateNote,
-} from "./controller.js";
+} from "./note.controller.js";
+import authenticate from "./authenticate.user.js";
 
 const router = express.Router();
 
+router.use(authenticate);
 router.get("/", getAllNotes);
 router.get("/:id", getNote);
 router.post("/", CreateNote);
