@@ -3,12 +3,21 @@ import dotenv from "dotenv";
 import connectDB from "./db.js";
 import router from "./router.js";
 import path from "path";
+import cors from "cors";
 import "./cronJobs.js";
 import userRouter from "./user.route.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your frontend URL
+    credentials: true, // ✅ allow cookies to be sent
+  }),
+);
+
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", userRouter);
