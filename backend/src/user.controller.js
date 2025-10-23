@@ -112,3 +112,31 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({ message: "Erorr While Updating the profile" });
   }
 };
+
+export const update = async (req, res) => {
+  const { fullName, profilePic } = req.body;
+  try {
+    if (!fullName)
+      return res.status(200).json({ message: "Please fill all the details" });
+
+    let profileImg = null;
+    if (profilePic) {
+      const uploadedPic = await cloudinary.uploader.upload(profilePic);
+      profileImg = uploadedPic.secure_url;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        fullName,
+        profilePic: profileImg,
+      },
+      { new: true },
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error While Updating profile" });
+  }
+};

@@ -2,6 +2,7 @@ import axios from "axios";
 import { create } from "zustand";
 
 const NoteFunctions = create((set) => ({
+  updating: false,
   loggingIn: false,
   Signing: false,
   authUser: null,
@@ -19,6 +20,21 @@ const NoteFunctions = create((set) => ({
       console.error(error);
     } finally {
       set({ checkingAuth: false });
+    }
+  },
+
+  updateUserData: async (information) => {
+    try {
+      set({ updating: true });
+      const res = await axios.put(`/api/auth/update`, information, {
+        withCredentials: true,
+      });
+      set({ authUser: res.data });
+      return { success: true, message: "Updated User SuccessFully" };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
+    } finally {
+      set({ updating: false });
     }
   },
 
