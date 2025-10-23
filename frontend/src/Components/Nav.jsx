@@ -1,4 +1,4 @@
-import { AddIcon, MoonIcon, PlusSquareIcon, SunIcon } from "@chakra-ui/icons";
+import { MoonIcon, PlusSquareIcon, SunIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -56,7 +56,17 @@ const Nav = () => {
           MIND-SCAPE
         </Text>
         <HStack>
-          <Button colorScheme="blue">{`${authUser.fullName}`}</Button>
+          <Button px={"5"} colorScheme="blue">
+            <Flex align={"center"} gap={"2"}>
+              <Avatar
+                size="sm"
+                gap={"2"}
+                name={authUser.fullName}
+                src={authUser.profilePic}
+              />
+              <Text>{`${authUser.fullName}`}</Text>
+            </Flex>
+          </Button>
 
           <Button colorScheme="blue" onClick={handleLogout}>
             Logout
