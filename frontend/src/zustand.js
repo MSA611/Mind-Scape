@@ -26,7 +26,7 @@ const NoteFunctions = create((set) => ({
     try {
       await axios.post("/api/auth/logout");
       set({ authUser: null });
-      return { success: ture, message: "Logged Out SuccessFully" };
+      return { success: true, message: "Logged Out SuccessFully" };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     }
@@ -54,7 +54,7 @@ const NoteFunctions = create((set) => ({
         withCredentials: true,
       });
       set({ authUser: res.data });
-      return { success: true, message: res.data?.message };
+      return { success: true, message: "Logged In SuccessFully" };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     } finally {

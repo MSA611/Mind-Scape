@@ -75,7 +75,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Wrong Password" });
 
     generateToken(user._id, res);
-    res.status(200).json({ message: "User logged In SuccessFully" });
+    res.status(200).json(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed To Login The User" });
