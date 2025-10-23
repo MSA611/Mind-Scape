@@ -14,7 +14,7 @@ import NoteFunctions from "../zustand";
 
 const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { logout } = NoteFunctions();
+  const { logout, authUser } = NoteFunctions();
   const toast = useToast();
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -37,6 +37,7 @@ const Nav = () => {
       });
     }
   };
+  console.log("auth User : ", authUser);
   return (
     <Box>
       <Flex
@@ -56,6 +57,8 @@ const Nav = () => {
           MIND-SCAPE
         </Text>
         <HStack>
+          <Button colorScheme="blue">{`${authUser.fullName}`}</Button>
+
           <Button colorScheme="blue" onClick={handleLogout}>
             Logout
           </Button>

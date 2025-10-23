@@ -8,8 +8,11 @@ import "./cronJobs.js";
 import userRouter from "./user.route.js";
 import cookieParser from "cookie-parser";
 
+const __dirname = path.resolve();
 dotenv.config();
 const app = express();
+app.use(cookieParser());
+app.use(express.json());
 
 app.use(
   cors({
@@ -17,12 +20,10 @@ app.use(
     credentials: true,
   }),
 );
-
-app.use(cookieParser());
-app.use(express.json());
 app.use("/api/auth", userRouter);
 app.use("/api/note", router);
-const __dirname = path.resolve();
+
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
