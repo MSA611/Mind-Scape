@@ -37,7 +37,6 @@ const Nav = () => {
       });
     }
   };
-  console.log("auth User : ", authUser);
   return (
     <Box>
       <Flex
