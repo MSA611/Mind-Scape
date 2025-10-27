@@ -51,3 +51,24 @@ export const Logout = async (_, res) => {
     res.status(500).json({ message: "Error In Logout function" });
   }
 };
+
+export const Login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    if (!email || !password)
+      return res.status(400).json({ message: "Please fill all the details" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User does not exits" });
+
+    const comparePass = await bcrypt.compare(password, user.password);
+    if (!comparePass)
+      return res.status(400).json({ message: "Invalid Password" });
+
+    generateToken(user._id, res);
+    res.status(200).json(user);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Error In Login function" });
+  }
+};
