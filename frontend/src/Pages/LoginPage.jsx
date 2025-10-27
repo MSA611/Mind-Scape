@@ -22,7 +22,6 @@ function LoginPage() {
   const toast = useToast();
 
   const { login, loggingIn } = NoteFunctions();
-  console.log(loggingIn);
 
   const handleForm = async (e) => {
     e.preventDefault();

@@ -16,6 +16,7 @@ const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { logout, authUser } = NoteFunctions();
   const toast = useToast();
+
   const handleLogout = async (e) => {
     e.preventDefault();
     const { success, message } = await logout();
@@ -25,7 +26,7 @@ const Nav = () => {
         duration: 3000,
         status: "success",
         isClosable: true,
-        descripition: message,
+        description: message,
       });
     } else {
       toast({

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 
-const NoteFunctions = create((set) => ({
+const NoteFunctions = create((set, get) => ({
   loggingIn: false,
   Signing: false,
   authUser: null,
@@ -25,8 +25,12 @@ const NoteFunctions = create((set) => ({
   logout: async () => {
     try {
       await axios.post("/api/auth/logout");
+      const user = get().authUser;
       set({ authUser: null });
-      return { success: true, message: "Logged Out SuccessFully" };
+      return {
+        success: true,
+        message: `${user.fullName} Logged Out Successfully`,
+      };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     }
@@ -39,7 +43,10 @@ const NoteFunctions = create((set) => ({
         withCredentials: true,
       });
       set({ authUser: res.data });
-      return { success: true, message: res.data?.message };
+      return {
+        success: true,
+        message: `${res.data.fullName} Signed In Successfully`,
+      };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     } finally {
@@ -54,7 +61,10 @@ const NoteFunctions = create((set) => ({
         withCredentials: true,
       });
       set({ authUser: res.data });
-      return { success: true, message: "Logged In SuccessFully" };
+      return {
+        success: true,
+        message: `${res.data.fullName} Logged In SuccessFully`,
+      };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     } finally {
