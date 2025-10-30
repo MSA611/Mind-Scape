@@ -1,4 +1,4 @@
-import { Box, Flex, VStack } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, VStack } from "@chakra-ui/react";
 import Nav from "../Components/Nav.jsx";
 import NoteFunctions from "../zustand.js";
 import { useEffect, useState } from "react";
@@ -24,21 +24,18 @@ const HomePage = () => {
 
       {loading && <Loading />}
       <VStack>{note.length == 0 && !loading ? <EmptyDB /> : null}</VStack>
-      <Flex
-        alignItems={"flex-start"}
-        p={"6"}
-        flexWrap={"wrap"}
-        gap={"12"}
-        columns={{
-          base: 1,
-          md: 2,
-          lg: 3,
+
+      <Box
+        p="6"
+        sx={{
+          columnCount: { base: 1, md: 2, lg: 3 },
+          columnGap: "24px",
         }}
       >
         {note.map((note) => {
           return <NoteCard note={note} key={note._id} />;
         })}
-      </Flex>
+      </Box>
     </Box>
   );
 };

@@ -7,10 +7,12 @@ import {
   UpdateNote,
 } from "./note.controller.js";
 import { arcjetMiddleware } from "./arcjet.middleware.js";
+import authenticate from "./authenticate.user.js";
 
 const router = express.Router();
 router.use(arcjetMiddleware);
 
+router.use(authenticate);
 router.get("/", getAllNotes);
 router.get("/:id", getNote);
 router.post("/", CreateNote);

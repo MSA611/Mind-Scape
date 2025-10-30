@@ -13,9 +13,13 @@ const authenticate = async (req, res, next) => {
     if (!decode)
       return res.status(403).json({ message: "User Has Token But Not Valid" });
 
-    const user = await User.findOne(decode.email).select("-password");
+    const user = await User.findById(decode.userId).select("-password");
+    if (!user)
+      return res.status(403).json({
+        message: "User does not exists in the data in the decode jwt verify",
+      });
 
-    res.user = user;
+    req.user = user;
     next();
   } catch (error) {
     res.status(500).json({ message: "Failed To Authenticate User" });

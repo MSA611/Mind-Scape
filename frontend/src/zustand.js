@@ -2,12 +2,87 @@ import axios from "axios";
 import { create } from "zustand";
 
 const NoteFunctions = create((set) => ({
+  updating: false,
+  loggingIn: false,
+  Signing: false,
+  authUser: null,
+  checkingAuth: true,
   note: [],
   setNote: (note) => set({ note }),
 
+  authenticateUser: async () => {
+    try {
+      const res = await axios.get("/api/auth/check", {
+        withCredentials: true,
+      });
+      set({ authUser: res.data });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ checkingAuth: false });
+    }
+  },
+
+  updateUserData: async (information) => {
+    try {
+      set({ updating: true });
+      const res = await axios.put(`/api/auth/update`, information, {
+        withCredentials: true,
+      });
+      set({ authUser: res.data });
+      return { success: true, message: "Updated User SuccessFully" };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
+    } finally {
+      set({ updating: false });
+    }
+  },
+
+  logout: async () => {
+    try {
+      await axios.post("/api/auth/logout");
+      set({ authUser: null });
+      return { success: true, message: "Logged Out SuccessFully" };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
+    }
+  },
+
+  signup: async (information) => {
+    try {
+      set({ Signing: true });
+      const res = await axios.post("/api/auth/signup", information, {
+        withCredentials: true,
+      });
+      set({ authUser: res.data });
+      return { success: true, message: res.data?.message };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
+    } finally {
+      set({ Signing: false });
+    }
+  },
+
+  login: async (information) => {
+    try {
+      set({ loggingIn: true });
+      const res = await axios.post("/api/auth/login", information, {
+        withCredentials: true,
+      });
+      set({ authUser: res.data });
+      return { success: true, message: "Logged In SuccessFully" };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
+    } finally {
+      set({ loggingIn: false });
+    }
+  },
+
   fetchNote: async () => {
     try {
-      const res = await axios.get("/api/note");
+      const res = await axios.get("/api/note", {
+        withCredentials: true,
+      });
       set({ note: res.data });
       return { success: true };
     } catch (error) {
@@ -21,6 +96,7 @@ const NoteFunctions = create((set) => ({
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       });
       set((state) => ({ note: [...state.note, res.data] }));
       return { success: true, message: "Note Created SuccessFully" };
@@ -31,7 +107,9 @@ const NoteFunctions = create((set) => ({
 
   getNote: async (p_id) => {
     try {
-      const res = await axios.get(`/api/note/${p_id}`);
+      const res = await axios.get(`/api/note/${p_id}`, {
+        withCredentials: true,
+      });
       return {
         success: true,
         data: res.data,
@@ -44,7 +122,9 @@ const NoteFunctions = create((set) => ({
 
   DelNote: async (p_id) => {
     try {
-      await axios.delete(`/api/note/${p_id}`);
+      await axios.delete(`/api/note/${p_id}`, {
+        withCredentials: true,
+      });
       set((state) => ({
         note: state.note.filter((note) => note._id !== p_id),
       }));
@@ -60,6 +140,7 @@ const NoteFunctions = create((set) => ({
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       });
       set((state) => ({
         note: state.note.map((note) => (note._id === p_id ? res.data : note)),

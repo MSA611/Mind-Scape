@@ -30,6 +30,7 @@ const NoteCard = ({ note }) => {
   return (
     <Box
       flex={{ base: "100%", md: "48%", lg: "30%" }}
+      m={"3.5"}
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
